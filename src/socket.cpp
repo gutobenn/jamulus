@@ -27,7 +27,7 @@
 
 
 /* Implementation *************************************************************/
-void CSocket::Init ( const quint16 iPortNumber )
+void CSocket::Init ( const QString& strBindAddress, const quint16 iPortNumber )
 {
 #ifdef _WIN32
     // for the Windows socket usage we have to start it up first
@@ -47,7 +47,7 @@ void CSocket::Init ( const quint16 iPortNumber )
     // preinitialize socket in address (only the port number is missing)
     sockaddr_in UdpSocketInAddr;
     UdpSocketInAddr.sin_family      = AF_INET;
-    UdpSocketInAddr.sin_addr.s_addr = INADDR_ANY;
+    UdpSocketInAddr.sin_addr.s_addr = strBindAddress.isEmpty() ? INADDR_ANY : inet_addr(strBindAddress.toUtf8().data());
 
     // initialize the listening socket
     bool bSuccess;

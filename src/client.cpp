@@ -27,6 +27,7 @@
 
 /* Implementation *************************************************************/
 CClient::CClient ( const quint16  iPortNumber,
+                   const QString& strBindAddress,
                    const QString& strConnOnStartupAddress,
                    const int      iCtrlMIDIChannel,
                    const bool     bNoAutoJackConnect ) :
@@ -58,7 +59,7 @@ CClient::CClient ( const quint16  iPortNumber,
     iNumAudioChannels                ( 1 ),
     bIsInitializationPhase           ( true ),
     bMuteOutStream                   ( false ),
-    Socket                           ( &Channel, iPortNumber ),
+    Socket                           ( &Channel, strBindAddress, iPortNumber ),
     Sound                            ( AudioCallback, this, iCtrlMIDIChannel, bNoAutoJackConnect ),
     iAudioInFader                    ( AUD_FADER_IN_MIDDLE ),
     bReverbOnLeftChan                ( false ),

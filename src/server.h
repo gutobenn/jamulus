@@ -168,6 +168,7 @@ public:
     CServer ( const int          iNewMaxNumChan,
               const int          iMaxDaysHistory,
               const QString&     strLoggingFileName,
+              const QString&     strBindAddress,
               const quint16      iPortNumber,
               const QString&     strHTMLStatusFileName,
               const QString&     strHistoryFileName,

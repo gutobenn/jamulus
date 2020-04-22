@@ -70,6 +70,7 @@ int main ( int argc, char** argv )
     QString      strHTMLStatusFileName     = "";
     QString      strServerName             = "";
     QString      strLoggingFileName        = "";
+    QString      strBindAddress            = "";
     QString      strHistoryFileName        = "";
     QString      strRecordingDirName       = "";
     QString      strCentralServer          = "";
@@ -277,6 +278,21 @@ int main ( int argc, char** argv )
         {
             strLoggingFileName = strArgument;
             tsConsole << "- logging file name: " << strLoggingFileName << endl;
+            continue;
+        }
+
+
+        // Bind address ---------------------------------------------------------
+        if ( GetStringArgument ( tsConsole,
+                                  argc,
+                                  argv,
+                                  i,
+                                  "-b",
+                                  "--bind",
+                                  strArgument ) )
+        {
+            strBindAddress = strArgument;
+            tsConsole << "- selected bind address: " << strBindAddress << endl;
             continue;
         }
 
@@ -508,6 +524,7 @@ int main ( int argc, char** argv )
             // Client:
             // actual client object
             CClient Client ( iPortNumber,
+                             strBindAddress,
                              strConnOnStartupAddress,
                              iCtrlMIDIChannel,
                              bNoAutoJackConnect );
@@ -546,6 +563,7 @@ int main ( int argc, char** argv )
             CServer Server ( iNumServerChannels,
                              iMaxDaysHistory,
                              strLoggingFileName,
+                             strBindAddress,
                              iPortNumber,
                              strHTMLStatusFileName,
                              strHistoryFileName,
@@ -627,6 +645,7 @@ QString UsageArguments ( char **argv )
         "\nRecognized options:\n"
         "  -a, --servername      server name, required for HTML status (server\n"
         "                        only)\n"
+        "  -b, --bind            bind address\n"
         "  -c, --connect         connect to given server address on startup\n"
         "                        (client only)\n"
         "  -e, --centralserver   address of the central server (server only)\n"

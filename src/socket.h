@@ -35,6 +35,7 @@
 #ifndef _WIN32
 # include <netinet/in.h>
 # include <sys/socket.h>
+# include <arpa/inet.h>
 #endif
 
 
@@ -57,17 +58,19 @@ class CSocket : public QObject
     Q_OBJECT
 
 public:
-    CSocket ( CChannel*     pNewChannel,
-              const quint16 iPortNumber )
+    CSocket ( CChannel*      pNewChannel,
+              const QString& strBindAddress,
+              const quint16  iPortNumber )
         : pChannel ( pNewChannel ),
           bIsClient ( true ),
-          bJitterBufferOK ( true ) { Init ( iPortNumber ); }
+          bJitterBufferOK ( true ) { Init ( strBindAddress, iPortNumber ); }
 
-    CSocket ( CServer*      pNServP,
-              const quint16 iPortNumber )
+    CSocket ( CServer*       pNServP,
+              const QString& strBindAddress,
+              const quint16  iPortNumber )
         : pServer ( pNServP ),
           bIsClient ( false ),
-          bJitterBufferOK ( true ) { Init ( iPortNumber ); }
+          bJitterBufferOK ( true ) { Init ( strBindAddress, iPortNumber ); }
 
     virtual ~CSocket();
 
@@ -78,7 +81,7 @@ public:
     void Close();
 
 protected:
-    void Init ( const quint16 iPortNumber );
+    void Init ( const QString& strBindAddress, const quint16 iPortNumber );
 
 #ifdef _WIN32
     SOCKET           UdpSocket;
@@ -134,13 +137,15 @@ class CHighPrioSocket : public QObject
     Q_OBJECT
 
 public:
-    CHighPrioSocket ( CChannel*     pNewChannel,
-                      const quint16 iPortNumber )
-        : Socket ( pNewChannel, iPortNumber ) { Init(); }
+    CHighPrioSocket ( CChannel*      pNewChannel,
+                      const QString& strBindAddress,
+                      const quint16  iPortNumber )
+        : Socket ( pNewChannel, strBindAddress, iPortNumber ) { Init(); }
 
     CHighPrioSocket ( CServer*      pNewServer,
+                      const QString& strBindAddress,
                       const quint16 iPortNumber )
-        : Socket ( pNewServer, iPortNumber ) { Init(); }
+        : Socket ( pNewServer, strBindAddress, iPortNumber ) { Init(); }
 
     virtual ~CHighPrioSocket()
     {
